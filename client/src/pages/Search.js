@@ -10,7 +10,7 @@ class Search extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
 
     this.state = {
-      results: [],
+      results: {},
       searchQuery: "",
       wasValidated: false,
     };
@@ -28,10 +28,11 @@ class Search extends Component {
     });
     
     if (passedValidation) {
-      Api.getBooks()
+      Api
+        .search(this.state.searchQuery)
         .then((response) => {
           this.setState({
-            results: response.body || [],
+            results: response.data || [],
             wasValidated: false,
           });
         })
@@ -80,16 +81,9 @@ class Search extends Component {
           </div>
         </div>
 
-        <div className="row mt-4">
+        <div className="row">
           <div className="col-md-12">
-            <div className="card">
-              <div className="card-header">
-                Results
-              </div>
-              <div className="card-body">
-                <SearchResults results={this.state.results} />
-              </div>
-            </div>
+            <SearchResults results={this.state.results} />
           </div>
         </div>
       </main>

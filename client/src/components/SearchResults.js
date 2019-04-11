@@ -2,27 +2,27 @@ import React, {Component} from "react";
 
 class SearchResults extends Component {
   render() {
-    return (
-      <div>
-        {this.renderResults(this.props.results)}
-      </div>
-    );
-  }
-
-  renderResults(results) {
-    if (!results.length) {
-      return (
-        <h2>No results</h2>
-      );
+    if (this.props.results.items) {
+      return this.props.results.items.map(volume => this.renderBook(volume));
     } else {
-      return results.map(book => this.renderBook(book));
+      return (
+        <div className="card mt-4">
+          <div className="card-body">
+            <span>No results</span>
+          </div>
+        </div>
+      );
     }
   }
 
-  renderBook(book) {
+  renderBook(volume) {
     return (
-      <div>
-        <h3>{book.title}</h3>
+      <div className="card mt-4" key={volume.id}>
+        <div className="card-body">
+          <h3>{volume.volumeInfo.title}</h3>
+          <p>{volume.volumeInfo.authors.join(", ")}</p>
+          <p>{volume.volumeInfo.description}</p>
+        </div>
       </div>
     );
   }
