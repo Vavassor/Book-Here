@@ -53,7 +53,7 @@ class SearchResults extends Component {
           <div className="media">
             {
               info.imageLinks
-                ? <img className="mr-3" src={info.imageLinks.thumbnail} alt="" />
+                ? <a href={info.previewLink}><img className="mr-3" src={info.imageLinks.thumbnail} alt={info.title} /></a>
                 : ""
             }
             <div className="media-body">

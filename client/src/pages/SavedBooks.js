@@ -18,6 +18,19 @@ class SavedBooks extends Component {
       })
       .catch(error => console.error(error));
   }
+
+  handleDelete(id) {
+    Api
+      .deleteBook(id)
+      .then(response => {
+        this.setState((state, props) => {
+          return {
+            books: state.books.filter(book => book._id !== id),
+          };
+        });
+      })
+      .catch(error => console.error(error));
+  }
   
   render() {
     if (this.state.books.length) {
@@ -42,13 +55,21 @@ class SavedBooks extends Component {
           <div className="media">
             {
               book.image
-                ? <img className="mr-3" src={book.image} alt="" />
+                ? <a href={book.link}><img className="mr-3" src={book.image} alt={book.title} /></a>
                 : ""
             }
             <div className="media-body">
               {book.description}
             </div>
           </div>
+
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={event => this.handleDelete(book._id)}
+          >
+            Delete
+          </button>
         </div>
       </div>
     );
