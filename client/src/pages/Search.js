@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Api from "../utilities/Api";
+import SearchResults from "../components/SearchResults";
 
 class Search extends Component {
   constructor(props) {
@@ -9,7 +10,9 @@ class Search extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
 
     this.state = {
+      results: [],
       searchQuery: "",
+      wasValidated: false,
     };
 
     this.form = React.createRef();
@@ -26,8 +29,13 @@ class Search extends Component {
     
     if (passedValidation) {
       Api.getBooks()
-      .then((response) => this.showResults(response.body))
-      .catch(error => console.error(error));
+        .then((response) => {
+          this.setState({
+            results: response.body || [],
+            wasValidated: false,
+          });
+        })
+        .catch(error => console.error(error));
     }
   }
 
@@ -47,7 +55,7 @@ class Search extends Component {
               <div className="card-body">
                 <form id="search"
                   onSubmit={this.handleFormSubmit}
-                  className={this.state.wasValidated && "was-validated"}
+                  className={this.state.wasValidated ? "was-validated" : ""}
                   ref={this.form}
                   noValidate
                 >
@@ -79,19 +87,13 @@ class Search extends Component {
                 Results
               </div>
               <div className="card-body">
-                <div>Help</div>
+                <SearchResults results={this.state.results} />
               </div>
             </div>
           </div>
         </div>
       </main>
     );
-  }
-
-  showResults(results) {
-    this.setState({
-      wasValidated: false,
-    });
   }
 }
 
