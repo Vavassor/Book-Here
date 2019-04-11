@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import Api from "../utilities/Api";
+import Card from "../components/Card";
+import SavedBook from "../components/SavedBook";
 
 class SavedBooks extends Component {
   constructor(props) {
@@ -8,6 +10,8 @@ class SavedBooks extends Component {
     this.state = {
       books: [],
     };
+
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -34,45 +38,26 @@ class SavedBooks extends Component {
   
   render() {
     if (this.state.books.length) {
-      return this.state.books.map(book => this.renderBook(book));
+      return this.state.books.map((book) => {
+        return (
+          <SavedBook
+            id={book._id}
+            title={book.title}
+            authors={book.authors}
+            description={book.description}
+            image={book.image}
+            link={book.link}
+            handleDelete={this.handleDelete}
+          />
+        );
+      });
     } else {
       return (
-        <div className="card">
-          <div className="card-body">
-            <span>No books saved.</span>
-          </div>
-        </div>
+        <Card>
+          <span>No books saved.</span>
+        </Card>
       );
     }
-  }
-
-  renderBook(book) {
-    return (
-      <div className="card">
-        <div className="card-body">
-          <h3 className="card-title"><a href={book.link}>{book.title}</a></h3>
-          <p className="card-text">Written by: {book.authors.join(", ")}</p>
-          <div className="media">
-            {
-              book.image
-                ? <a href={book.link}><img className="mr-3" src={book.image} alt={book.title} /></a>
-                : ""
-            }
-            <div className="media-body">
-              {book.description}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={event => this.handleDelete(book._id)}
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    );
   }
 }
 

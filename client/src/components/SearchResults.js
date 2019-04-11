@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Api from "../utilities/Api";
+import Card from "../components/Card";
 
 class SearchResults extends Component {
   handleSaveClick(volume) {
@@ -33,11 +34,9 @@ class SearchResults extends Component {
       return this.props.results.items.map(volume => this.renderBook(volume));
     } else {
       return (
-        <div className="card mt-4">
-          <div className="card-body">
-            <span>No results</span>
-          </div>
-        </div>
+        <Card>
+          <span>No results</span>
+        </Card>
       );
     }
   }
@@ -46,29 +45,27 @@ class SearchResults extends Component {
     const info = volume.volumeInfo;
 
     return (
-      <div className="card mt-4" key={volume.id}>
-        <div className="card-body">
-          <h3 className="card-title"><a href={info.previewLink}>{info.title}</a></h3>
-          <p className="card-text">Written by: {info.authors.join(", ")}</p>
-          <div className="media">
-            {
-              info.imageLinks
-                ? <a href={info.previewLink}><img className="mr-3" src={info.imageLinks.thumbnail} alt={info.title} /></a>
-                : ""
-            }
-            <div className="media-body">
-              {info.description}
-            </div>
+      <Card key={volume.id}>
+        <h3 className="card-title"><a href={info.previewLink}>{info.title}</a></h3>
+        <p className="card-text">Written by: {info.authors.join(", ")}</p>
+        <div className="media">
+          {
+            info.imageLinks
+              ? <a href={info.previewLink}><img className="mr-3" src={info.imageLinks.thumbnail} alt={info.title} /></a>
+              : ""
+          }
+          <div className="media-body">
+            {info.description}
           </div>
-          <button
-            className="btn btn-primary mt-3"
-            type="button"
-            onClick={event => this.handleSaveClick(volume)}
-          >
-            Save
-          </button>
         </div>
-      </div>
+        <button
+          className="btn btn-primary mt-3"
+          type="button"
+          onClick={event => this.handleSaveClick(volume)}
+        >
+          Save
+        </button>
+      </Card>
     );
   }
 }
