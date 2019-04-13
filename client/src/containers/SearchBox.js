@@ -32,7 +32,13 @@ class SearchBox extends Component {
           this.setState({
             wasValidated: false,
           });
-          this.props.handleResultsChange(response.data || []);
+          const results = response.data || [];
+          for (const volume of results.items) {
+            if (!volume.volumeInfo.authors) {
+              volume.volumeInfo.authors = ["Missing Author"];
+            }
+          }
+          this.props.handleResultsChange(results);
         })
         .catch(error => console.error(error));
     }

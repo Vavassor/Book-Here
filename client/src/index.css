@@ -1,5 +1,37 @@
+a {
+  color: #0a81cf;
+}
+
 body {
+  background-color: #efefef;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+.btn,
+.card {
+  font-family: "Libre Franklin", sans-serif;
+}
+
+.card-title,
+.nav-link,
+.navbar-brand {
+  font-family: "Zilla Slab", sans-serif;
+}
+
+.nav-link {
+  font-size: 1.15em;
+}
+
+.navbar {
+  border-bottom: .2em solid #cfcfcf;
+  border-left: .1em solid #cfcfcf;
+  border-right: .1em solid #cfcfcf;
+  border-bottom-left-radius: .3em;
+  border-bottom-right-radius: .3em;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: rgba(0, 0, 0, 0.6);
 }

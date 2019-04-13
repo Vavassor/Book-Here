@@ -47,7 +47,7 @@ class SearchResults extends Component {
     return (
       <Card key={volume.id}>
         <h3 className="card-title"><a href={info.previewLink}>{info.title}</a></h3>
-        <p className="card-text">Written by: {info.authors.join(", ")}</p>
+        <p className="card-text">by {info.authors.join(", ")}</p>
         <div className="media">
           {
             info.imageLinks

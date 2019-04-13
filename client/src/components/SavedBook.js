@@ -6,7 +6,7 @@ class SavedBook extends Component {
     return (
       <Card>
         <h3 className="card-title"><a href={this.props.link}>{this.props.title}</a></h3>
-        <p className="card-text">Written by: {this.props.authors.join(", ")}</p>
+        <p className="card-text">by {this.props.authors.join(", ")}</p>
         <div className="media">
           {
             this.props.image
