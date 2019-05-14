@@ -1,15 +1,13 @@
-import React, {Component} from "react";
+import React from "react";
 
-class Card extends Component {
-  render() {
-    return (
-      <div className="card mb-4">
-        <div className="card-body">
-          {this.props.children}
-        </div>
+function Card(props) {
+  return (
+    <div className="card mb-4">
+      <div className="card-body">
+        {props.children}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Card;

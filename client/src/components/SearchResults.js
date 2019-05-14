@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React from "react";
 import Api from "../utilities/Api";
 import Card from "../components/Card";
 
-class SearchResults extends Component {
-  handleSaveClick(volume) {
+function SearchResults(props) {
+  const handleSaveClick = (volume) => {
     const info = volume.volumeInfo;
     
     const book = {
@@ -29,19 +29,7 @@ class SearchResults extends Component {
       .catch(error => console.error(error));
   }
 
-  render() {
-    if (this.props.results.items) {
-      return this.props.results.items.map(volume => this.renderBook(volume));
-    } else {
-      return (
-        <Card>
-          <span>No results</span>
-        </Card>
-      );
-    }
-  }
-
-  renderBook(volume) {
+  const renderBook = (volume) => {
     const info = volume.volumeInfo;
 
     return (
@@ -61,10 +49,20 @@ class SearchResults extends Component {
         <button
           className="btn btn-primary mt-3"
           type="button"
-          onClick={event => this.handleSaveClick(volume)}
+          onClick={event => handleSaveClick(volume)}
         >
           Save
         </button>
+      </Card>
+    );
+  }
+
+  if (props.results.items) {
+    return props.results.items.map(volume => renderBook(volume));
+  } else {
+    return (
+      <Card>
+        <span>No results</span>
       </Card>
     );
   }
