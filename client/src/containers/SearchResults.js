@@ -1,8 +1,11 @@
-import React from "react";
-import Api from "../utilities/Api";
 import Card from "../components/Card";
+import {connect} from "react-redux";
+import {saveBook} from "../actions";
+import React from "react";
 
 function SearchResults(props) {
+  const {dispatch} = props;
+
   const handleSaveClick = (volume) => {
     const info = volume.volumeInfo;
     
@@ -23,10 +26,7 @@ function SearchResults(props) {
       book.image = info.imageLinks.thumbnail;
     }
 
-    Api
-      .saveBook(book)
-      .then(book => console.log(book))
-      .catch(error => console.error(error));
+    dispatch(saveBook(book));
   }
 
   const renderBook = (volume) => {
@@ -68,4 +68,12 @@ function SearchResults(props) {
   }
 }
 
-export default SearchResults;
+function mapStateToProps(state) {
+  const {search} = state;
+  const {results} = search;
+  return {
+    results,
+  };
+}
+
+export default connect(mapStateToProps)(SearchResults);

@@ -3,16 +3,14 @@ import axios from "axios";
 export const CALL_API = "CALL_API";
 
 const callApi = (body, endpoint, method, params) => {
-  axios
+  return axios
     .request({
       data: body,
       method: method,
       params: params,
       url: `/api${endpoint}`,
     })
-    .then((response) => {
-      return Object.assign({}, response.data);
-    });
+    .then(response => response.data);
 };
 
 export default (store) => (next) => (action) => {
@@ -53,7 +51,7 @@ export default (store) => (next) => (action) => {
 
   return callApi(body, endpoint, method, params)
     .then(response => next(actionWith({
-      response,
+      payload: response,
       type: successType,
     })))
     .catch(error => next(actionWith({

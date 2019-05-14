@@ -1,7 +1,10 @@
+import {connect} from "react-redux";
 import React, {useState} from "react";
-import Api from "../utilities/Api";
+import {search} from "../actions";
 
 function SearchBox(props) {
+  const {dispatch} = props;
+  
   const form = React.createRef();
 
   const [wasValidated, setWasValidated] = useState(false);
@@ -14,19 +17,7 @@ function SearchBox(props) {
     setWasValidated(true);
     
     if (passedValidation) {
-      Api
-        .search(searchQuery)
-        .then((response) => {
-          setWasValidated(false);
-          const results = response.data || [];
-          for (const volume of results.items) {
-            if (!volume.volumeInfo.authors) {
-              volume.volumeInfo.authors = ["Missing Author"];
-            }
-          }
-          props.handleResultsChange(results);
-        })
-        .catch(error => console.error(error));
+      dispatch(search(searchQuery));
     }
   }
 
@@ -59,4 +50,4 @@ function SearchBox(props) {
   );
 }
 
-export default SearchBox;
+export default connect()(SearchBox);
