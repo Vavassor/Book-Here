@@ -6,11 +6,11 @@ import SavedBook from "../SavedBook";
 Enzyme.configure({adapter: new Adapter()});
 
 describe("SavedBook", () => {
-  it("should render without crashing", () => {
+  it("renders without crashing", () => {
     shallow(<SavedBook />);
   });
 
-  it("should render book information", () => {
+  it("renders book information", () => {
     const props = {
       authors: ["Anonymous"],
       description: "No description.",
@@ -32,17 +32,17 @@ describe("SavedBook", () => {
     expect(enzymeWrapper.find(".media img").prop("alt")).toBe(props.title);
   });
 
-  it("should render no image when it has no cover", () => {
+  it("renders no image when it has no cover", () => {
     const enzymeWrapper = shallow(<SavedBook />);
     expect(enzymeWrapper.exists(".media img")).toBe(false);
   });
 
-  it("should render no authors", () => {
+  it("renders no authors", () => {
     const enzymeWrapper = shallow(<SavedBook />);
     expect(enzymeWrapper.find(".card-text").text()).toBe("by Nobody");
   });
 
-  it("should render multiple authors", () => {
+  it("renders multiple authors", () => {
     const props = {
       authors: ["Anonymous", "Citizen"],
     };
@@ -50,10 +50,10 @@ describe("SavedBook", () => {
     expect(enzymeWrapper.find(".card-text").text()).toBe("by Anonymous, Citizen");
   });
 
-  it("should call `handleDelete` when the delete button is clicked", () => {
+  it("calls `handleDelete` when the delete button is clicked", () => {
     const handleDelete = jest.fn();
     const enzymeWrapper = shallow(<SavedBook handleDelete={handleDelete} />);
-    enzymeWrapper.find(".button").simulate("click");
+    enzymeWrapper.find(".btn").simulate("click");
     expect(clickDelete).toHaveBeenCalled();
   });
 });
