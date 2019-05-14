@@ -1,9 +1,12 @@
-import React, {Component} from "react";
-import Api from "../utilities/Api";
 import Card from "../components/Card";
+import {connect} from "react-redux";
+import {saveBook} from "../actions";
+import React from "react";
 
-class SearchResults extends Component {
-  handleSaveClick(volume) {
+function SearchResults(props) {
+  const {dispatch} = props;
+
+  const handleSaveClick = (volume) => {
     const info = volume.volumeInfo;
     
     const book = {
@@ -23,25 +26,10 @@ class SearchResults extends Component {
       book.image = info.imageLinks.thumbnail;
     }
 
-    Api
-      .saveBook(book)
-      .then(book => console.log(book))
-      .catch(error => console.error(error));
+    dispatch(saveBook(book));
   }
 
-  render() {
-    if (this.props.results.items) {
-      return this.props.results.items.map(volume => this.renderBook(volume));
-    } else {
-      return (
-        <Card>
-          <span>No results</span>
-        </Card>
-      );
-    }
-  }
-
-  renderBook(volume) {
+  const renderBook = (volume) => {
     const info = volume.volumeInfo;
 
     return (
@@ -61,13 +49,31 @@ class SearchResults extends Component {
         <button
           className="btn btn-primary mt-3"
           type="button"
-          onClick={event => this.handleSaveClick(volume)}
+          onClick={event => handleSaveClick(volume)}
         >
           Save
         </button>
       </Card>
     );
   }
+
+  if (props.results.items) {
+    return props.results.items.map(volume => renderBook(volume));
+  } else {
+    return (
+      <Card>
+        <span>No results</span>
+      </Card>
+    );
+  }
 }
 
-export default SearchResults;
+function mapStateToProps(state) {
+  const {search} = state;
+  const {results} = search;
+  return {
+    results,
+  };
+}
+
+export default connect(mapStateToProps)(SearchResults);

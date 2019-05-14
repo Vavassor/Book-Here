@@ -1,64 +1,50 @@
-import React, {Component} from "react";
-import Api from "../utilities/Api";
 import Card from "../components/Card";
+import {connect} from "react-redux";
+import {deleteBook, getBook} from "../actions";
+import React, {useEffect} from "react";
 import SavedBook from "../components/SavedBook";
 
-class SavedBooks extends Component {
-  constructor(props) {
-    super(props);
+function SavedBooks(props) {
+  const {dispatch} = props;
 
-    this.state = {
-      books: [],
-    };
+  useEffect(() => {
+    dispatch(getBook());
+  }, [dispatch]);
 
-    this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  componentDidMount() {
-    Api
-      .getBooks()
-      .then(response => {
-        this.setState({books: response.data});
-      })
-      .catch(error => console.error(error));
-  }
-
-  handleDelete(id) {
-    Api
-      .deleteBook(id)
-      .then(response => {
-        this.setState((state, props) => {
-          return {
-            books: state.books.filter(book => book._id !== id),
-          };
-        });
-      })
-      .catch(error => console.error(error));
-  }
+  const handleDelete = (id) => {
+    dispatch(deleteBook(id));
+  };
   
-  render() {
-    if (this.state.books.length) {
-      return this.state.books.map((book) => {
-        return (
-          <SavedBook
-            id={book._id}
-            title={book.title}
-            authors={book.authors}
-            description={book.description}
-            image={book.image}
-            link={book.link}
-            handleDelete={this.handleDelete}
-          />
-        );
-      });
-    } else {
+  if (props.books.length) {
+    return props.books.map((book) => {
       return (
-        <Card>
-          <span>No books saved.</span>
-        </Card>
+        <SavedBook
+          key={book._id}
+          id={book._id}
+          title={book.title}
+          authors={book.authors}
+          description={book.description}
+          image={book.image}
+          link={book.link}
+          handleDelete={handleDelete}
+        />
       );
-    }
+    });
+  } else {
+    return (
+      <Card>
+        <span>No books saved.</span>
+      </Card>
+    );
   }
 }
 
-export default SavedBooks;
+function mapStateToProps(state) {
+  const {book} = state;
+  const {books} = book;
+  return {
+    books: books,
+  };
+}
+
+export default connect(mapStateToProps)(SavedBooks);
