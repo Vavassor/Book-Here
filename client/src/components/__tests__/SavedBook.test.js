@@ -26,10 +26,10 @@ describe("SavedBook", () => {
     expect(enzymeWrapper.find(".card-title a").text()).toBe(props.title);
     expect(enzymeWrapper.find(".card-title a").prop("href")).toBe(props.link);
     expect(enzymeWrapper.find(".card-text").text()).toBe("by " + props.authors.join(", "));
-    expect(enzymeWrapper.find(".media-body").text()).toBe(props.description);
     expect(enzymeWrapper.find(".media a").prop("href")).toBe(props.link);
     expect(enzymeWrapper.find(".media img").prop("src")).toBe(props.image);
     expect(enzymeWrapper.find(".media img").prop("alt")).toBe(props.title);
+    expect(enzymeWrapper.find(".media-body").text()).toBe(props.description);
   });
 
   it("renders no image when it has no cover", () => {
@@ -54,6 +54,6 @@ describe("SavedBook", () => {
     const handleDelete = jest.fn();
     const enzymeWrapper = shallow(<SavedBook handleDelete={handleDelete} />);
     enzymeWrapper.find(".btn").simulate("click");
-    expect(clickDelete).toHaveBeenCalled();
+    expect(handleDelete).toHaveBeenCalled();
   });
 });
