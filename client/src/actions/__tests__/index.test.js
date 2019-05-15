@@ -111,4 +111,61 @@ describe("Asynchronous Action Creators", () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it("creates `SAVE_BOOK_FAILURE` when a server error occurs", () => {
+    const savedBook = {
+      authors: ["Anonymous"],
+      description: "No description.",
+      image: "/images/Untitled.png",
+      link: "https://books.google.com/books?id=ZrsVZKWJg4UC",
+      title: "Untitled",
+    };
+
+    axiosMock.onPost("/api/book").networkError();
+
+    const expectedActions = [
+      {
+        type: ActionTypes.SAVE_BOOK_REQUEST,
+      },
+      {
+        type: ActionTypes.SAVE_BOOK_FAILURE,
+        error: "Network Error",
+      },
+    ];
+
+    const store = mockStore();
+
+    return store.dispatch(actions.saveBook(savedBook)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("creates `SAVE_BOOK_SUCCESS` when saving a book", () => {
+    const savedBook = {
+      authors: ["Anonymous"],
+      description: "No description.",
+      image: "/images/Untitled.png",
+      link: "https://books.google.com/books?id=ZrsVZKWJg4UC",
+      title: "Untitled",
+    };
+
+    const headers = {"Content-Type": "application/json"};
+    axiosMock.onPost("/api/book").reply(200, savedBook, headers);
+
+    const expectedActions = [
+      {
+        type: ActionTypes.SAVE_BOOK_REQUEST,
+      },
+      {
+        type: ActionTypes.SAVE_BOOK_SUCCESS,
+        payload: savedBook,
+      },
+    ];
+
+    const store = mockStore();
+
+    return store.dispatch(actions.saveBook(savedBook)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
 });
