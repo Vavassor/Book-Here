@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import React, {useState} from "react";
 import {search} from "../actions";
 
-function SearchBox(props) {
+export function SearchBox(props) {
   const {dispatch} = props;
   
   const form = React.createRef();

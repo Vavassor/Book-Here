@@ -1,8 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import Adapter from "enzyme-adapter-react-16";
 import App from ".";
+import React from "react";
+import Enzyme, {shallow} from "enzyme";
 
-it("renders without crashing", () => {
-  const div = document.createElement("div");
-  ReactDOM.render(<App />, div);
+Enzyme.configure({adapter: new Adapter()});
+
+it("should render itself in isolation", () => {
+  shallow(<App />);
 });

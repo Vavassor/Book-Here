@@ -2,10 +2,12 @@ import React from "react";
 import Card from "../components/Card";
 
 function SavedBook(props) {
+  const authors = props.authors || ["Nobody"];
+
   return (
     <Card>
       <h3 className="card-title"><a href={props.link}>{props.title}</a></h3>
-      <p className="card-text">by {props.authors.join(", ")}</p>
+      <p className="card-text">by {authors.join(", ")}</p>
       <div className="media">
         {
           props.image

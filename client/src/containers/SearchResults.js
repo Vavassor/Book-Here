@@ -1,9 +1,10 @@
 import Card from "../components/Card";
 import {connect} from "react-redux";
 import {saveBook} from "../actions";
+import SearchResult from "../components/SearchResult";
 import React from "react";
 
-function SearchResults(props) {
+export function SearchResults(props) {
   const {dispatch} = props;
 
   const handleSaveClick = (volume) => {
@@ -29,40 +30,16 @@ function SearchResults(props) {
     dispatch(saveBook(book));
   }
 
-  const renderBook = (volume) => {
-    const info = volume.volumeInfo;
-
-    return (
-      <Card key={volume.id}>
-        <h3 className="card-title"><a href={info.previewLink}>{info.title}</a></h3>
-        <p className="card-text">by {info.authors.join(", ")}</p>
-        <div className="media">
-          {
-            info.imageLinks
-              ? <a href={info.previewLink}><img className="mr-3" src={info.imageLinks.thumbnail} alt={info.title} /></a>
-              : ""
-          }
-          <div className="media-body">
-            {info.description}
-          </div>
-        </div>
-        <button
-          className="btn btn-primary mt-3"
-          type="button"
-          onClick={event => handleSaveClick(volume)}
-        >
-          Save
-        </button>
-      </Card>
-    );
-  }
-
-  if (props.results.items) {
-    return props.results.items.map(volume => renderBook(volume));
+  if (props.results
+      && props.results.items
+      && props.results.items.length) {
+    return props.results.items.map(volume => (
+      <SearchResult key={volume.id} volume={volume} handleSaveClick={handleSaveClick} />
+    ));
   } else {
     return (
       <Card>
-        <span>No results</span>
+        <span>No results.</span>
       </Card>
     );
   }
