@@ -13,7 +13,72 @@ const axiosMock = new MockAdapter(axios);
 
 describe("Asynchronous Action Creators", () => {
   afterEach(() => {
-    axiosMock.restore();
+    axiosMock.reset();
+  });
+
+  it("creates `DELETE_BOOK_FAILURE` when a server error occurs", () => {
+    const id = "8813f3f50232d286d54ab132";
+    axiosMock.onDelete("/api/book/" + id).networkError();
+
+    const expectedActions = [
+      {
+        id: id,
+        type: ActionTypes.DELETE_BOOK_REQUEST,
+      },
+      {
+        error: "Network Error",
+        id: id,
+        type: ActionTypes.DELETE_BOOK_FAILURE,
+      },
+    ];
+
+    const store = mockStore();
+
+    return store.dispatch(actions.deleteBook(id)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("creates `DELETE_BOOK_SUCCESS` when deleting a book", () => {
+    const id = "8813f3f50232d286d54ab132";
+    axiosMock.onDelete("/api/book/" + id).reply(200);
+
+    const expectedActions = [
+      {
+        id: id,
+        type: ActionTypes.DELETE_BOOK_REQUEST,
+      },
+      {
+        id: id,
+        type: ActionTypes.DELETE_BOOK_SUCCESS,
+      },
+    ];
+
+    const store = mockStore();
+
+    return store.dispatch(actions.deleteBook(id)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("creates `GET_BOOK_FAILURE` when a server error occurs", () => {
+    axiosMock.onGet("/api/book").networkError();
+
+    const expectedActions = [
+      {
+        type: ActionTypes.GET_BOOK_REQUEST,
+      },
+      {
+        type: ActionTypes.GET_BOOK_FAILURE,
+        error: "Network Error",
+      },
+    ];
+
+    const store = mockStore();
+
+    return store.dispatch(actions.getBook()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 
   it("creates `GET_BOOK_SUCCESS` when getting all books", () => {
@@ -37,26 +102,6 @@ describe("Asynchronous Action Creators", () => {
       {
         type: ActionTypes.GET_BOOK_SUCCESS,
         payload: books,
-      },
-    ];
-
-    const store = mockStore();
-
-    return store.dispatch(actions.getBook()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it("creates `GET_BOOK_FAILURE` when a server error occurs", () => {
-    axiosMock.onGet("/api/book").networkError();
-
-    const expectedActions = [
-      {
-        type: ActionTypes.GET_BOOK_REQUEST,
-      },
-      {
-        type: ActionTypes.GET_BOOK_FAILURE,
-        error: "Network Error",
       },
     ];
 
